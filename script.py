@@ -4,15 +4,33 @@ from tkinter import messagebox
 import requests
 from PIL import Image, ImageTk
 from io import BytesIO
+import numpy as np
 
-# Load CSV data
+# Carregar dados dos livros
 try:
     books_data = pd.read_csv("https://raw.githubusercontent.com/bernardovma/dados_livros/main/data.csv")
 except Exception as e:
     messagebox.showerror("Error", f"Failed to load CSV data:\n{e}")
     exit()
 
-# Function to search for a book by name
+# Criar função para recomendar livros
+def recommend_books(book):
+    # Calcular relevância de cada livro
+    books_data['relevance'] = books_data['average_rating'] * books_data['ratings_count']
+
+    # Filtrar livros similares
+    similar_books = books_data[(books_data['authors'] == book['authors'].values[0]) | (books_data['categories'] == book['categories'].values[0])]
+    similar_books = similar_books[similar_books['title'] != book['title'].values[0]]
+
+    # Calcula NDCG score
+    similar_books['ndcg_score'] = similar_books['relevance'].rank(ascending=False, method='max') / np.log2(similar_books.index + 2)
+
+    # Ranking dos livros e escolha do 5 melhores
+    recommended_books = similar_books.sort_values(by='ndcg_score', ascending=False).head(5)
+
+    return recommended_books
+
+# Função para buscar livro
 def search_book():
     book_name = entry.get().strip().lower()
     if book_name == '':
@@ -29,11 +47,18 @@ def search_book():
                     f"Description: {book['description'].values[0]}"
         info_label.config(text=book_info)
         display_image(book['thumbnail'].values[0])
-        find_similar_books(book)
+        recommended_books = recommend_books(book)
+        if not recommended_books.empty:
+            recommendation_info = "\n\nRecommended Books:\n"
+            for index, row in recommended_books.iterrows():
+                recommendation_info += f"{row['title']} by {row['authors']} - Category: {row['categories']}\n"
+            info_label.config(text=info_label.cget("text") + recommendation_info)
+        else:
+            messagebox.showinfo("Recommended Books", "No recommended books found.")
     else:
         messagebox.showinfo("Book Not Found", "Book not found.")
 
-# Function to display image
+# Função para exibir imagem
 def display_image(url):
     try:
         response = requests.get(url)
@@ -46,21 +71,7 @@ def display_image(url):
     except Exception as e:
         messagebox.showerror("Error", f"Failed to display image:\n{e}")
 
-# Function to find similar books by author or category
-def find_similar_books(book):
-    author = book['authors'].values[0]
-    category = book['categories'].values[0]
-    similar_books = books_data[(books_data['authors'] == author) | (books_data['categories'] == category)]
-    similar_books = similar_books[similar_books['title'] != book['title'].values[0]].head(5)
-    if not similar_books.empty:
-        similar_books_info = "\n\nSimilar Books:\n"
-        for index, row in similar_books.iterrows():
-            similar_books_info += f"{row['title']} by {row['authors']} - Category: {row['categories']}\n"
-        info_label.config(text=info_label.cget("text") + similar_books_info)
-    else:
-        messagebox.showinfo("Similar Books", "No similar books found.")
-
-# Create GUI
+# Criar interface gráfica
 root = tk.Tk()
 root.title("Search Books")
 root.attributes('-fullscreen', True)
