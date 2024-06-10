@@ -1,0 +1,4 @@
+
+<validation-overrides>
+  <allow until='2024-06-25'>indexing-change</allow>
+</validation-overrides>
