@@ -1,0 +1,112 @@
+body {
+	font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+	background-color: #ddd;
+}
+
+header {
+    background: #090909;
+    color: #fff;
+    display: flex;
+}
+
+header h1 {
+	margin-left: 50px;
+}
+
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 30px;
+	margin: 60px 80px;
+}
+
+form {
+	margin: 0 60px;
+}
+
+input[type="text"] {
+    width: calc(100% - 50px);
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    box-sizing: border-box;
+    text-align: center;
+}
+        
+input[type="text"]::placeholder {
+    text-align: center;
+}
+        
+input[type="submit"] {
+	border: none;
+	background: transparent;
+    cursor: pointer;
+}
+
+.fa-search {
+    font-size: 24px;
+    color: #555;
+}
+
+.submit-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+	right: 0;
+	top: 50%;
+    width: 40px;
+    height: 40px;
+}
+	 
+.book-info {
+	flex: 1;
+}
+
+.content {
+	margin: 30px 10%;
+}
+
+#conteudo-left{
+	width: calc(40% - 2px);
+	height:400px;
+	float:left;
+	background-color:#FFF;
+	display: flex;
+	justify-content: center;
+    align-items: center;
+	border: 1px solid #bbb;
+}
+		
+.image img {
+    height: 300px;
+	width: 200px;
+    display: block;
+    margin: auto;
+}
+
+#conteudo-right{
+	width: calc(60% - 2px);
+	height: 400px;
+	float:left;
+	background-color:#FFF;
+	display: flex;
+	justify-content: center;
+    align-items: center;
+	box-sizing: border-box;
+	padding: 30px 60px;
+	border: 1px solid #bbb;
+	margin-bottom: 20px;
+}
+
+pre {
+    white-space: pre-wrap;
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	overflow-wrap: break-word;
+}

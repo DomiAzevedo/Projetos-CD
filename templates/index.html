@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Books</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('serve_static', path='style.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<header>
+	<nav>
+        <h1>Search Books</h1>
+</header>
+
+<body>
+    <div class="container">
+        <div class="book-info">
+            <form action="/search" method="post" class="search-bar">
+				<input type="text" id="query" name="query" placeholder="Search for a book">
+				<button type="submit" class="submit-btn"><i class="fas fa-search"></i></button>
+			</form>
+			<h2>Recommended Books</h2>
+				{% for index, book in recommended_books.iterrows() %}
+				<div class="content">
+					<div id="conteudo-left">
+						<div class="image">
+							<img src="{{ book['thumbnail'] }}" alt="Book Thumbnail">
+						</div>
+					</div>
+					
+					<div id="conteudo-right">
+						<div id="book_info">
+							<h2>{{ book['title'] }}</h2>
+							<pre>Author(s): {{ book['authors'] }} <br>
+								Category: {{ book['categories'] }} <br>
+								Description: {{ book['description'] }} </pre>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+        </div>
+
+    </div>
+</body>
+</html>
