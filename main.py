@@ -17,13 +17,22 @@ def serve_static(path):
 def index():
     return render_template("index.html", recommended_books=empty_df)
 
-@app_flask.route("/search", methods=["POST"])
+@app.route("/search", methods=["POST"])
 def search():
     query = request.form["query"]
-    recommended_books = app_vespa.query_bm25(query)
+    rank_type = request.form.get("rank_type", "bm25")  # Obtém o tipo de ranqueamento selecionado ou padrão para "bm25"
+
+    if rank_type == "bm25":
+        recommended_books = app_vespa.query_bm25(query)
+    elif rank_type == "semantic":
+        recommended_books = app_vespa.query_semantic(query)
+    elif rank_type == "hybrid":
+        recommended_books = app_vespa.query_hybrid(query)
+
     df = pd.read_csv("https://raw.githubusercontent.com/bernardovma/dados_livros/main/data.csv")
     recommended_books = recommended_books.merge(df[['title', 'thumbnail']], on='title', how='left')
-    return render_template("index.html", recommended_books=recommended_books)
+
+    return render_template("index.html", recommended_books=recommended_books, rank_type=rank_type)
 
 if __name__ == "__main__":
     app_flask.run(debug=True)
