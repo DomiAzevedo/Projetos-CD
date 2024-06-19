@@ -2,12 +2,12 @@
 <html>
 <head>
     <title>Search Books</title>
-	<link rel="icon" href="book-icon.ico" id="favicon">
-	<link rel="stylesheet" type="text/css" href="{{ url_for('serve_static', path='style.css') }}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-	<link rel="stylesheet" href="style.css">
+    <link rel="icon" href="book-icon.ico" id="favicon">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('serve_static', path='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
-	<script>
+    <script>
         // Verifica se o tema escuro está ativado
         const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -30,104 +30,105 @@
 </head>
 
 <header>
-	<nav>
+    <nav>
         <img src="book-icon.png" alt="Books">
-		<h1>Search Books</h1>
-	</nav>
+        <h1>Search Books</h1>
+    </nav>
 </header>
 
 <body>
     <div class="container">
         <div class="book-info">
             <form action="/search" method="post" class="search-bar">
-				<input type="text" id="query" name="query" placeholder="Search for a book">
-				<button type="submit" class="submit-btn"><i class="fas fa-search"></i></button>
-			</form>
-			
-			<div class="rank">
-				<p>Selecione um método de ranqueamento:</p>
-				<div id="rank-buttons">
-					<button class="btn" data-rank="semantic">Semantic</button>
-					<button class="btn" data-rank="bm25">BM25</button>
-					<button class="btn" data-rank="hybrid">Hybrid</button>
-				</div>
-			</div>
+                <input type="text" id="query" name="query" placeholder="Search for a book" required>
+                <input type="hidden" id="rank-type-input" name="rank_type" value="bm25">
+                <button type="submit" class="submit-btn"><i class="fas fa-search"></i></button>
+            </form>
+            
+            <div class="rank">
+                <p>Select a ranking method:</p>
+                <div id="rank-buttons">
+                    <button type="button" class="btn" data-rank="semantic">Semantic</button>
+                    <button type="button" class="btn" data-rank="bm25">BM25</button>
+                    <button type="button" class="btn" data-rank="hybrid">Hybrid</button>
+                </div>
+            </div>
 
-			<h2 class="recommend">Recommended Books</h2>
-				{% for index, book in recommended_books.iterrows() %}
-				<div class="content">
-					<div id="conteudo-left">
-						<div class="image">
-							<img src="{{ book['thumbnail'] }}" alt="Book Thumbnail">
-						</div>
-					</div>
-					
-					<div id="conteudo-right">
-						<div id="book_info">
-							<h2>{{ book['title'] }}</h2>
-							<p>
-							Author(s): {{ book['authors'] }} <br>
-							Category: {{ book['categories'] }} <br>
-							<div class="desc">
-							Description: {{ book['description'] }}
-							</div>
-							</p>
-						</div>
-					</div>
-				</div>
-				{% endfor %}
+            <h2 class="recommend">Recommended Books</h2>
+            {% if recommended_books is not none %}
+                {% for index, book in recommended_books.iterrows() %}
+                <div class="content">
+                    <div id="conteudo-left">
+                        <div class="image">
+                            <img src="{{ book['thumbnail'] }}" alt="Book Thumbnail">
+                        </div>
+                    </div>
+                    
+                    <div id="conteudo-right">
+                        <div id="book_info">
+                            <h2>{{ book['title'] }}</h2>
+                            <p>
+                            Author(s): {{ book['authors'] }} <br>
+                            Category: {{ book['categories'] }} <br>
+                            <div class="desc">
+                            Description: {{ book['description'] }}
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
-
     </div>
 
-	<script>
-		document.querySelectorAll('.desc').forEach(function(item) {
-			var lineHeight = parseFloat(window.getComputedStyle(item).lineHeight);
-			var lines = item.clientHeight / lineHeight;
-			if (item.scrollHeight > item.clientHeight) {
-				var lastLine = Math.floor(lines);
-				var lastLineHeight = lastLine * lineHeight;
-				var moreLink = document.createElement('span');
-				moreLink.classList.add('more');
-				moreLink.textContent = 'Read more';
-				moreLink.style.display = 'block';
-				moreLink.style.marginTop = '5px';
-				moreLink.style.cursor = 'pointer';
-				moreLink.addEventListener('click', function() {
-					item.classList.toggle('expanded');
-					var parentContent = item.closest('.content');
-					var conteudoRight = parentContent.querySelector('#conteudo-right');
-					if (item.classList.contains('expanded')) {
-						moreLink.textContent = 'Read less';
-						item.style.maxHeight = 'none';
-						item.style.overflow = 'auto';
-						conteudoRight.style.overflow = 'auto';
-					} else {
-						moreLink.textContent = 'Read more';
-						item.style.maxHeight = lastLineHeight + 'px';
-						item.style.overflow = 'hidden';
-						conteudoRight.style.overflow = 'hidden';
-					}
-				});
-				item.style.maxHeight = lastLineHeight + 'px';
-				item.parentNode.appendChild(moreLink);
-				moreLink.style.display = 'block';
-			}
-		});
+    <script>
+        document.querySelectorAll('.desc').forEach(function(item) {
+            var lineHeight = parseFloat(window.getComputedStyle(item).lineHeight);
+            var lines = item.clientHeight / lineHeight;
+            if (item.scrollHeight > item.clientHeight) {
+                var lastLine = Math.floor(lines);
+                var lastLineHeight = lastLine * lineHeight;
+                var moreLink = document.createElement('span');
+                moreLink.classList.add('more');
+                moreLink.textContent = 'Read more';
+                moreLink.style.display = 'block';
+                moreLink.style.marginTop = '5px';
+                moreLink.style.cursor = 'pointer';
+                moreLink.addEventListener('click', function() {
+                    item.classList.toggle('expanded');
+                    var parentContent = item.closest('.content');
+                    var conteudoRight = parentContent.querySelector('#conteudo-right');
+                    if (item.classList.contains('expanded')) {
+                        moreLink.textContent = 'Read less';
+                        item.style.maxHeight = 'none';
+                        item.style.overflow = 'auto';
+                        conteudoRight.style.overflow = 'auto';
+                    } else {
+                        moreLink.textContent = 'Read more';
+                        item.style.maxHeight = lastLineHeight + 'px';
+                        item.style.overflow = 'hidden';
+                        conteudoRight.style.overflow = 'hidden';
+                    }
+                });
+                item.style.maxHeight = lastLineHeight + 'px';
+                item.parentNode.appendChild(moreLink);
+                moreLink.style.display = 'block';
+            }
+        });
 
-		document.addEventListener("DOMContentLoaded", function() {
-			const rankButtons = document.querySelectorAll("#rank-buttons button");
-			rankButtons.forEach(button => {
-				button.addEventListener("click", function() {
-					rankButtons.forEach(btn => btn.classList.remove("selected"));
-					this.classList.add("selected");
-					const rankType = this.getAttribute("data-rank");
-					document.querySelector("#rank-type-input").value = rankType;
-					document.querySelector(".search-bar").submit();
-				});
-			});
-		});
-	</script>
-	
+        document.addEventListener("DOMContentLoaded", function() {
+            const rankButtons = document.querySelectorAll("#rank-buttons button");
+            rankButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    rankButtons.forEach(btn => btn.classList.remove("selected"));
+                    this.classList.add("selected");
+                    const rankType = this.getAttribute("data-rank");
+                    document.querySelector("#rank-type-input").value = rankType;
+                });
+            });
+        });
+    </script>
+    
 </body>
 </html>

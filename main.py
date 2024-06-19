@@ -34,4 +34,4 @@ def search():
     return render_template("index.html", recommended_books=recommended_books, rank_type=rank_type)
 
 if __name__ == "__main__":
-    app_flask.run(debug=True, use_reloader=False)
+    app_flask.run(debug=True, use_reloader = False)
