@@ -11,8 +11,16 @@ header {
     display: flex;
 }
 
-header h1 {
-	margin-left: 50px;
+nav {
+    margin: 10px 50px;
+    display: flex; /* Usar flexbox para alinhar os itens */
+    align-items: center; /* Centralizar verticalmente os itens */
+}
+
+header img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 .container {
@@ -24,7 +32,7 @@ header h1 {
 }
 
 form {
-	margin: 0 60px;
+	margin: 0 10%;
 }
 
 input[type="text"] {
@@ -62,24 +70,58 @@ input[type="submit"] {
     width: 40px;
     height: 40px;
 }
-	 
+
+.rank {
+    text-align: center;
+}
+
+.btn {
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    background-color: #ddd;
+    color: #aaa; 
+    border: 2px solid #aaa;
+}
+
+#rank-buttons .btn:hover {
+    background-color: #ddd;
+    color: black;
+    border: 2px solid black;
+}
+
+#rank-buttons .btn:active,
+#rank-buttons .btn.selected {
+    background-color: #ddd;
+    color: black;
+    border: 2px solid black;
+}
+
 .book-info {
 	flex: 1;
 }
 
+.recommend {
+	margin-top: 60px;
+	margin-left: 10%
+}
+
 .content {
-	margin-top: 40px;
+	margin: 30px 10%;
 }
 
 #conteudo-left{
 	width: calc(40% - 2px);
-	height:400px;
 	float:left;
+    height: 400px;
 	background-color:#FFF;
 	display: flex;
 	justify-content: center;
     align-items: center;
-	border-radius: 5px;
 	border: 1px solid #bbb;
 }
 		
@@ -92,51 +134,42 @@ input[type="submit"] {
 
 #conteudo-right{
 	width: calc(60% - 2px);
-	height: 400px;
 	float:left;
+    height: 402px;
 	background-color:#FFF;
-	display: flex;
-	justify-content: center;
-    align-items: center;
 	box-sizing: border-box;
 	padding: 30px 60px;
-	border-radius: 5px;
 	border: 1px solid #bbb;
 	margin-bottom: 20px;
+    overflow: hidden;
 }
 
-#book-info {
-	max-width: calc(100% - 120px);
-	text-align: center;
-}
-
-pre {
-    white-space: pre-wrap;
+p {
 	font-family: Arial, sans-serif;
 	font-size: 16px;
+	line-height: 2;
+}
+
+.desc {
 	line-height: 1.5;
-	overflow-wrap: break-word;
+	z-index: 2;
+	max-height: 100px;
+    overflow: hidden;
+    position: relative;
 }
 
-.books-list {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.book {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.book .image img {
-    width: 150px;
-    height: auto;
-}
-
-.book .info p {
-    text-align: center;
+.more {
+    color: blue;
+    cursor: pointer;
+    display: none;
     margin-top: 5px;
+}
+
+.expanded .desc {
+    max-height: none;
+    overflow: auto;
+}
+
+.expanded .more {
+    display: block;
 }
