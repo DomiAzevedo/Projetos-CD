@@ -4,8 +4,8 @@ class LLM_Model:
     def __init__(self, api_key):
         openai.api_key = api_key
 
-    def generate_generic_questions(self, book_title, book_description, book_category):
-        prompt = f"Generate three generic questions about the book titled: {book_title}, given the book with the following description: '{book_description} from this category (it can be multiple categories, and in some cases the are no categories shown): '{book_category}'. The questions should be broad and not specific, not giving away the book title, being more general and applicable to other books, but at the same time giving elements to discuss the book."
+    def generate_generic_questions(self, book_description, book_category):
+        prompt = f"Generate three generic questions about a book, given the following description: '{book_description} ans its category (it can be multiple categories, and in some cases the are no categories shown): '{book_category}'. The questions should be broad and not specific, not giving away the book title, being more general and applicable to other books, but at the same time giving elements to discuss the book."
         messages = [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt}
