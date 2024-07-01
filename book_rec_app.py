@@ -323,7 +323,8 @@ class VespaApp:
                 response:VespaQueryResponse = session.query(
                     yql=f"select * from sources * where userQuery() limit {limit}",
                     query=query,
-                    ranking="bm25"
+                    ranking="bm25",
+                    body={"input.query(q)": f"embed(e5, '{query}')"},
                 )
                 assert(response.is_successful())
 
