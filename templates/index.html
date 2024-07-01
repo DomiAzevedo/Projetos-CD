@@ -48,9 +48,12 @@
             <div class="rank">
                 <p>Select a ranking method:</p>
                 <div id="rank-buttons">
-                    <button type="button" class="btn" data-rank="semantic">Semantic</button>
                     <button type="button" class="btn" data-rank="bm25">BM25</button>
-                    <button type="button" class="btn" data-rank="hybrid">Hybrid</button>
+                    <button type="button" class="btn" data-rank="bm25_semantic">BM25 + Semantic</button>
+                    <button type="button" class="btn" data-rank="colbert_local">Colbert (Local)</button>
+                    <button type="button" class="btn" data-rank="colbert_global">Colbert (Global)</button>
+                    <button type="button" class="btn" data-rank="hibrido_colbert_local">BM25/Semantic + Colbert (Local)</button>
+                    <button type="button" class="btn" data-rank="hibrido_colbert_global">BM25/Semantic + Colbert (Global)</button>
                 </div>
             </div>
 

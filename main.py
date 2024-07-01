@@ -22,10 +22,16 @@ def search():
 
     if rank_type == "bm25":
         recommended_books = app_vespa.query_bm25(query)
-    elif rank_type == "semantic":
-        recommended_books = app_vespa.query_semantic(query)
-    elif rank_type == "hybrid":
-        recommended_books = app_vespa.query_hybrid(query)
+    elif rank_type == "bm25_semantic":
+        recommended_books = app_vespa.query_second_phase(query)
+    elif rank_type == "colbert_local":
+        recommended_books = app_vespa.query_colbert(query)
+    elif rank_type == "colbert_global":
+        recommended_books = app_vespa.query_colbert_global(query)
+    elif rank_type == "hibrido_colbert_local":
+        recommended_books = app_vespa.query_colbert_2phase(query)
+    elif rank_type == "hibrido_colbert_global":
+        recommended_books = app_vespa.query_colbert_2phase_global(query)
 
     df = pd.read_csv("https://raw.githubusercontent.com/bernardovma/dados_livros/main/data.csv")
 
